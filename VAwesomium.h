@@ -1,5 +1,8 @@
 #include <vgui_controls/Panel.h>
+#include <vgui_controls/ImagePanel.h>
+#include <vgui_controls/Image.h>
 #include <vgui/ISurface.h>
+#include "vgui_bitmapimage.h"
 
 #include <Awesomium/WebCore.h>
 #include <Awesomium/WebString.h>
@@ -30,8 +33,15 @@ namespace vgui
 	private:
 		void		MouseButtonHelper(MouseCode code, bool isUp);
 		void		KeyboardButtonHelper(KeyCode code, bool isUp);
-		Awesomium::WebCore		*m_WebCore;
-		Awesomium::WebView		*m_WebView;
-		int			m_iTextureId;
+		void		DrawBrowserView();
+		void		AllocateViewBuffer();
+		int			NearestPowerOfTwo(int);
+		void		ResizeView();
+		Awesomium::WebCore			*m_WebCore;
+		Awesomium::WebView			*m_WebView;
+		Awesomium::BitmapSurface	*m_BitmapSurface;
+		int							m_iTextureId;
+		int							m_iNearestPowerWidth;
+		int							m_iNearestPowerHeight;
 	};
 }
