@@ -1,7 +1,3 @@
-BaseClass
-BaseClass
-BaseClass
-BaseClass
 #include "cbase.h"
 
 #include <VAwesomium.h>
