@@ -1,7 +1,8 @@
 #include "cbase.h"
+#include "inputsystem/iinputsystem.h"
 
 #include <VAwesomium.h>
-#include "inputsystem/iinputsystem.h"
+#include <vgui_controls/Controls.h>
 
 #define DEPTH 4
 
@@ -10,11 +11,14 @@ using namespace Awesomium;
 
 VAwesomium::VAwesomium(Panel *parent, const char *panelName) : Panel(parent, panelName)
 {
-	WebConfig config;
-
 	m_iTextureId = surface()->CreateNewTextureID(true);
+
+	WebConfig config;
 	m_WebCore = WebCore::Initialize(config);
+
 	m_WebView = m_WebCore->CreateWebView(GetTall(), GetWide());
+	m_WebView->set_js_method_handler(this);
+	m_WebView->set_load_listener(this);
 
 	SetPaintEnabled(true);
 	SetPaintBackgroundEnabled(false);
@@ -30,6 +34,11 @@ VAwesomium::~VAwesomium()
 	m_BitmapSurface = NULL;
 }
 
+void VAwesomium::ExecuteJavaScript(const char *script, const char *frame_xpath)
+{
+	m_WebView->ExecuteJavascript(WSLit(script), WSLit(frame_xpath));
+}
+
 void VAwesomium::Think()
 {
 	m_WebCore->Update();
@@ -41,7 +50,7 @@ void VAwesomium::Paint()
 
 	m_BitmapSurface = (BitmapSurface*)m_WebView->surface();
 
-	if (m_BitmapSurface)
+	if (m_BitmapSurface && m_iNearestPowerWidth + m_iNearestPowerHeight > 0)
 	{
 		AllocateViewBuffer();
 		DrawBrowserView();
@@ -102,22 +111,22 @@ void VAwesomium::OnMouseReleased(MouseCode code)
 
 void VAwesomium::MouseButtonHelper(MouseCode code, bool isUp)
 {
-	Awesomium::MouseButton awesomiumButton;
+	MouseButton mouseButton;
 
 	switch (code)
 	{
-	case MOUSE_LEFT:
-		awesomiumButton = kMouseButton_Left;
-		break;
 	case MOUSE_RIGHT:
-		awesomiumButton = kMouseButton_Right;
+		mouseButton = kMouseButton_Right;
 		break;
 	case MOUSE_MIDDLE:
-		awesomiumButton = kMouseButton_Middle;
+		mouseButton = kMouseButton_Middle;
+		break;
+	default: // MOUSE_LEFT:
+		mouseButton = kMouseButton_Left;
 		break;
 	}
 
-	isUp ? m_WebView->InjectMouseUp(awesomiumButton) : m_WebView->InjectMouseDown(awesomiumButton);
+	isUp ? m_WebView->InjectMouseUp(mouseButton) : m_WebView->InjectMouseDown(mouseButton);
 }
 
 void VAwesomium::OnMouseWheeled(int delta)
@@ -156,16 +165,14 @@ void VAwesomium::OnKeyCodeReleased(KeyCode code)
 
 void VAwesomium::ResizeView()
 {
+	m_iNearestPowerWidth = NearestPowerOfTwo(GetWide());
+	m_iNearestPowerHeight = NearestPowerOfTwo(GetTall());
 	m_WebView->Resize(GetWide(), GetTall());
-	if (m_BitmapSurface)
-	{
-		m_iNearestPowerWidth = NearestPowerOfTwo(GetWide());
-		m_iNearestPowerHeight = NearestPowerOfTwo(GetTall());
-	}
 }
 
 void VAwesomium::OpenURL(const char *address)
 {
+	m_WebView->LoadURL(WebURL(WSLit("about:blank")));
 	m_WebView->LoadURL(WebURL(WSLit(address)));
 	ResizeView();
 }
