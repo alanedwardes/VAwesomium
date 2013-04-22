@@ -13,6 +13,8 @@ Basic Usage
 
 A very simple way of using this is to instanciate the class as it is in your VGUI element.
 
+Header:
+
 	class MyPanel : public vgui::Panel
 	{
 	public:
@@ -21,7 +23,9 @@ A very simple way of using this is to instanciate the class as it is in your VGU
 	private:
 		VAwesomium *m_Browser;
 	};
-	
+
+CPP:
+
 	MyPanel::MyPanel(vgui::Panel *parent, const char *panelName) : vgui::Panel(parent, panelName)
 	{
 		m_Browser = new VAwesomium(this, "Awesomium");
@@ -32,6 +36,8 @@ Advanced Usage
 --------------
 
 A more advanced way is to inherit from the VAwesomium class, and with that you can override methods that support the declaration and deletion of JavaScript objects etc. Example:
+
+Header:
 
 	#include "VAwesomium.h"
 
@@ -50,6 +56,8 @@ A more advanced way is to inherit from the VAwesomium class, and with that you c
 
 		virtual void OnMethodCall(Awesomium::WebView* caller, unsigned int remote_object_id, const Awesomium::WebString& method_name, const Awesomium::JSArray& args);
 	};
+
+CPP:
 
 	using namespace Awesomium;
 
