@@ -45,6 +45,7 @@ protected:
 	virtual void OnKeyTyped(wchar_t unichar);
 	virtual void OnCursorMoved(int x, int y);
 	virtual void OnMouseWheeled(int delta);
+	virtual void OnRequestFocus(vgui::VPANEL subFocus, vgui::VPANEL defaultPanel);
 
 private:
 	void MouseButtonHelper(vgui::MouseCode code, bool isUp);

@@ -96,11 +96,14 @@ void VAwesomium::OnCursorMoved(int x, int y)
 	m_WebView->InjectMouseMove(x, y);
 }
 
+void VAwesomium::OnRequestFocus(vgui::VPANEL subFocus, vgui::VPANEL defaultPanel)
+{
+	BaseClass::OnRequestFocus(subFocus, defaultPanel);
+	m_WebView->Focus();
+}
+
 void VAwesomium::OnMousePressed(MouseCode code)
 {
-	RequestFocus();
-	m_WebView->Focus();
-
 	MouseButtonHelper(code, false);
 }
 
