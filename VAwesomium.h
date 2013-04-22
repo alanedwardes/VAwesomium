@@ -25,6 +25,7 @@ public:
 	~VAwesomium();
 	void OpenURL(const char *address);
 	void ExecuteJavaScript(const char *script, const char *frame_xpath);
+	Awesomium::WebView* GetWebView(void);
 
 	virtual void OnMethodCall(Awesomium::WebView* caller, unsigned int remote_object_id, const Awesomium::WebString& method_name, const Awesomium::JSArray& args){};
 	virtual Awesomium::JSValue OnMethodCallWithReturnValue(Awesomium::WebView* caller, unsigned int remote_object_id, const Awesomium::WebString& method_name, const Awesomium::JSArray& args){return Awesomium::JSValue::Undefined();};

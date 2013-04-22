@@ -34,6 +34,11 @@ VAwesomium::~VAwesomium()
 	m_BitmapSurface = NULL;
 }
 
+Awesomium::WebView* VAwesomium::GetWebView()
+{
+	return m_WebView;
+}
+
 void VAwesomium::ExecuteJavaScript(const char *script, const char *frame_xpath)
 {
 	m_WebView->ExecuteJavascript(WSLit(script), WSLit(frame_xpath));
