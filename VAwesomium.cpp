@@ -83,6 +83,7 @@ void VAwesomium::AllocateViewBuffer()
 	vgui::surface()->DrawSetTextureRGBA(m_iTextureId, buffer, m_BitmapSurface->width(), m_BitmapSurface->height(), true, true);
 
 	delete buffer;
+	buffer = NULL;
 }
 
 void VAwesomium::DrawBrowserView()
