@@ -9,12 +9,20 @@
 using namespace vgui;
 using namespace Awesomium;
 
+int VAwesomium::m_iNumberOfViews = 0;
+
 VAwesomium::VAwesomium(Panel *parent, const char *panelName) : Panel(parent, panelName)
 {
+	m_iNumberOfViews++;
+	
 	m_iTextureId = surface()->CreateNewTextureID(true);
 
-	WebConfig config;
-	m_WebCore = WebCore::Initialize(config);
+	m_WebCore = WebCore::instance();
+	if( !m_WebCore )
+	{
+		WebConfig config;
+		m_WebCore =  WebCore::Initialize(config);
+	}
 
 	m_WebView = m_WebCore->CreateWebView(GetTall(), GetWide());
 	m_WebView->set_js_method_handler(this);
@@ -26,8 +34,14 @@ VAwesomium::VAwesomium(Panel *parent, const char *panelName) : Panel(parent, pan
 
 VAwesomium::~VAwesomium()
 {
+	m_iNumberOfViews--;
+	
 	m_WebView->Destroy();
-	m_WebCore->Shutdown();
+	
+	if( m_WebCore && m_iNumberOfViews == 0 )
+	{
+		m_WebCore->Shutdown();	
+	}
 
 	m_WebView = NULL;
 	m_WebCore = NULL;

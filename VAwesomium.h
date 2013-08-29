@@ -62,4 +62,6 @@ private:
 	int	m_iNearestPowerWidth;
 	int m_iNearestPowerHeight;
 	bool m_bHasLoaded;
+	
+	static int m_iNumberOfViews;
 };
