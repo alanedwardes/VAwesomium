@@ -1,7 +1,9 @@
 VAwesomium
 ==========
 
-A class for the Source Engine used for creating an [Awesomium](http://awesomium.com) panel in VGUI.
+A class for the Source SDK 2007 used for creating an [Awesomium](http://awesomium.com) panel in VGUI.
+
+Please note: The [source-sdk-2013](https://github.com/ValveSoftware/source-sdk-2013) includes a full implementation of the Chromium Embedded Framework, supporting features such as CSS3, HTML5 and WebM video out of the box. It is recommended that you use that instead if you are using the 2013 SDK.
 
 Pre-requisites
 --------------
